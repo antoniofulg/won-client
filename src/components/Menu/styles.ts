@@ -14,7 +14,7 @@ export const LogoWrapper = styled.div`
   ${media.lessThan('medium')`
     position: absolute;
     left: 50%;
-    transform: translateX(-50%)
+    transform: translateX(-50%);
   `}
 `
 
@@ -36,5 +36,15 @@ export const MenuGroup = styled.div`
     > div {
       margin-left: ${theme.spacings.xsmall};
     }
+  `}
+`
+
+type MenuFullProps = {
+  isOpen: boolean
+}
+
+export const MenuFull = styled.nav<MenuFullProps>`
+  ${({ isOpen }) => css`
+    opacity: ${isOpen ? 1 : 0};
   `}
 `
