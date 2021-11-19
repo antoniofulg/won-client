@@ -11,7 +11,7 @@ export type GameCardProps = {
   developer: string
   img: string
   price: string
-  promotionalPrice: string
+  promotionalPrice?: string
 }
 
 const GameCard = ({
@@ -35,7 +35,7 @@ const GameCard = ({
       </S.FavButton>
       <S.BuyBox>
         {!!promotionalPrice && <S.Price isPromotional>{price}</S.Price>}
-        <S.Price>{price}</S.Price>
+        <S.Price>{promotionalPrice || price}</S.Price>
         <Button icon={<AddShoppingCart />} size="small" />
       </S.BuyBox>
     </S.Content>
