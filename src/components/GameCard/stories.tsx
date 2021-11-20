@@ -11,6 +11,10 @@ export default {
     price: 'R$ 235,00',
     promotionalPrice: 'R$ 200,00',
   },
+  argTypes: {
+    onFav: { action: 'click' },
+    ribbon: { type: 'string' },
+  },
   parameters: {
     backgrounds: {
       default: 'dark',
@@ -23,3 +27,15 @@ export const Basic: Story<GameCardProps> = (args) => (
     <GameCard {...args} />
   </div>
 )
+
+export const WithRibbon: Story<GameCardProps> = (args) => (
+  <div style={{ width: '30rem' }}>
+    <GameCard {...args} />
+  </div>
+)
+
+WithRibbon.args = {
+  ribbon: 'R$ 35,00 OFF',
+  ribbonColor: 'primary',
+  ribbonSize: 'small',
+}
