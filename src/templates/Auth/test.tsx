@@ -14,7 +14,7 @@ describe('<Auth />', () => {
 
     expect(
       screen.getByRole('heading', {
-        name: /all your favorite games in on place/i,
+        name: /All your favorite games in one place/i,
       })
     ).toBeInTheDocument()
 
