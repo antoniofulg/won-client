@@ -1,15 +1,15 @@
+import Link from 'next/link'
+
 import { useState } from 'react'
 import { Menu2 as MenuIcon } from '@styled-icons/remix-fill/Menu2'
-import {
-  ShoppingCart as ShoppingCartIcon,
-  Search as SearchIcon,
-  Close as CloseIcon,
-} from '@styled-icons/material-outlined'
+import { ShoppingCart as ShoppingCartIcon } from '@styled-icons/material-outlined/ShoppingCart'
+import { Search as SearchIcon } from '@styled-icons/material-outlined/Search'
+import { Close as CloseIcon } from '@styled-icons/material-outlined/Close'
 
-import Logo from 'components/Logo'
-import * as S from './styles'
 import Button from 'components/Button'
+import Logo from 'components/Logo'
 import MediaMatch from 'components/MediaMatch'
+import * as S from './styles'
 
 export type MenuProps = {
   username?: string
@@ -46,7 +46,9 @@ const Menu = ({ username }: MenuProps) => {
         </S.IconWrapper>
         {!username && (
           <MediaMatch greaterThan="medium">
-            <Button>Sign In</Button>
+            <Link href="/sign-in" passHref>
+              <Button as="a">Sign in</Button>
+            </Link>
           </MediaMatch>
         )}
       </S.MenuGroup>
@@ -67,13 +69,15 @@ const Menu = ({ username }: MenuProps) => {
 
         {!username && (
           <S.RegisterBox>
-            <Button fullWidth size="large">
-              Log in now
-            </Button>
+            <Link href="/sign-in" passHref>
+              <Button fullWidth size="large" as="a">
+                Sign in
+              </Button>
+            </Link>
             <span>or</span>
-            <S.CreateAccount href="#" title="Sign Up">
-              Sign Up
-            </S.CreateAccount>
+            <Link href="/sign-up" passHref>
+              <S.CreateAccount title="Sign Up">Sign Up</S.CreateAccount>
+            </Link>
           </S.RegisterBox>
         )}
       </S.MenuFull>
