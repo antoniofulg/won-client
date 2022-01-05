@@ -1,5 +1,6 @@
 import styled, { css, DefaultTheme } from 'styled-components'
 import media from 'styled-media-query'
+
 import { HeadingProps, LineColors } from '.'
 
 const wrapperModifiers = {
@@ -15,8 +16,12 @@ const wrapperModifiers = {
     font-size: ${theme.font.sizes.xlarge};
 
     ${media.greaterThan('medium')`
-        font-size: ${theme.font.sizes.xxlarge};
-      `}
+      font-size: ${theme.font.sizes.xxlarge};
+    `}
+  `,
+
+  huge: (theme: DefaultTheme) => css`
+    font-size: ${theme.font.sizes.huge};
   `,
 
   lineLeft: (theme: DefaultTheme, lineColor: LineColors) => css`
@@ -31,7 +36,7 @@ const wrapperModifiers = {
     &::after {
       position: absolute;
       left: 0;
-      bottom: -1rem;
+      bottom: -0.5rem;
       content: '';
       width: 5rem;
       border-bottom: 0.5rem solid ${theme.colors[lineColor]};
