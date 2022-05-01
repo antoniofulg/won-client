@@ -10,6 +10,35 @@ export default {
     items: mockItems,
     total: 'R$ 330,00',
   },
+  argTypes: {
+    items: {
+      control: {
+        type: 'array',
+        options: {
+          control: {
+            type: 'object',
+            options: {
+              title: {
+                control: {
+                  type: 'text',
+                },
+              },
+              price: {
+                control: {
+                  type: 'text',
+                },
+              },
+              img: {
+                control: {
+                  type: 'text',
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  },
   parameters: {
     backgrounds: {
       default: 'won-dark',
