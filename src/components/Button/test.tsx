@@ -1,7 +1,8 @@
 import { screen } from '@testing-library/react'
 import { renderWithTheme } from 'utils/tests/helpers'
-import Button from '.'
 import { AddShoppingCart } from '@styled-icons/material-outlined/AddShoppingCart'
+
+import Button from '.'
 
 describe('<Button />', () => {
   it('should render the medium size by default', () => {
@@ -9,8 +10,8 @@ describe('<Button />', () => {
 
     expect(screen.getByRole('button', { name: /Buy now/i })).toHaveStyle({
       height: '4rem',
-      'font-size': '1.4rem',
       padding: '0.8rem 3.2rem',
+      'font-size': '1.4rem',
     })
 
     expect(container.firstChild).toMatchSnapshot()
@@ -35,7 +36,7 @@ describe('<Button />', () => {
     })
   })
 
-  it('should render the full width size', () => {
+  it('should render a fullWidth version', () => {
     renderWithTheme(<Button fullWidth>Buy now</Button>)
 
     expect(screen.getByRole('button', { name: /Buy now/i })).toHaveStyle({
@@ -43,7 +44,7 @@ describe('<Button />', () => {
     })
   })
 
-  it('should render an icon version ', () => {
+  it('should render an icon version', () => {
     renderWithTheme(
       <Button icon={<AddShoppingCart data-testid="icon" />}>Buy now</Button>
     )
@@ -52,7 +53,7 @@ describe('<Button />', () => {
     expect(screen.getByTestId('icon')).toBeInTheDocument()
   })
 
-  it('should render a minimal version ', () => {
+  it('should render a minimal version', () => {
     renderWithTheme(
       <Button icon={<AddShoppingCart data-testid="icon" />} minimal>
         Buy now
@@ -73,14 +74,24 @@ describe('<Button />', () => {
     )
   })
 
+  it('should render a disabled Button', () => {
+    renderWithTheme(<Button disabled>Buy now</Button>)
+
+    expect(screen.getByRole('button', { name: /buy now/i })).toHaveStyleRule(
+      'cursor',
+      'not-allowed',
+      {
+        modifier: ':disabled',
+      }
+    )
+  })
+
   it('should render Button as a link', () => {
-    const { container, debug } = renderWithTheme(
+    renderWithTheme(
       <Button as="a" href="/link">
         Buy now
       </Button>
     )
-
-    debug(container)
 
     expect(screen.getByRole('link', { name: /buy now/i })).toHaveAttribute(
       'href',
