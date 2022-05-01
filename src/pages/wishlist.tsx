@@ -1,42 +1,18 @@
-import Base from 'templates/Base'
+import Wishlist, { WishlistTemplateProps } from 'templates/Wishlist'
 
-import Heading from 'components/Heading'
-import Showcase from 'components/Showcase'
-import GameCard, { GameCardProps } from 'components/GameCard'
-import { Container } from 'components/Container'
-import { Grid } from 'components/Grid'
-import { HighlightProps } from 'components/Highlight'
+import gamesMock from 'components/GameCardSlider/mock'
+import highlightMock from 'components/Highlight/mock'
 
-export type WishlistTemplateProps = {
-  games?: GameCardProps[]
-  recommendedGames: GameCardProps[]
-  recommendedHighlight: HighlightProps
+export default function WishlistPage(props: WishlistTemplateProps) {
+  return <Wishlist {...props} />
 }
 
-const Wishlist = ({
-  games,
-  recommendedGames,
-  recommendedHighlight,
-}: WishlistTemplateProps) => (
-  <Base>
-    <Container>
-      <Heading lineLeft lineColor="secondary">
-        Wishlist
-      </Heading>
-
-      <Grid>
-        {games?.map((game, index) => (
-          <GameCard key={`wishlist-${index}`} {...game} />
-        ))}
-      </Grid>
-    </Container>
-
-    <Showcase
-      title="You may like these games"
-      games={recommendedGames}
-      highlight={recommendedHighlight}
-    />
-  </Base>
-)
-
-export default Wishlist
+export async function getStaticProps() {
+  return {
+    props: {
+      games: gamesMock,
+      recommendedGames: gamesMock.slice(0, 5),
+      recommendedHighlight: highlightMock,
+    },
+  }
+}
