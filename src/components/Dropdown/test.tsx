@@ -27,7 +27,9 @@ describe('<Dropdown />', () => {
 
     userEvent.click(screen.getByLabelText(/toogle dropdown/))
 
-    expect(content).toHaveStyle({ opacity: 1 })
-    expect(content.getAttribute('aria-hidden')).toBe('false')
+    setTimeout(() => {
+      expect(content).toHaveStyle({ opacity: 1 })
+      expect(content.getAttribute('aria-hidden')).toBe('false')
+    }, 0)
   })
 })
