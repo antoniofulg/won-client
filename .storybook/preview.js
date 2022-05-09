@@ -8,11 +8,11 @@ export const parameters = {
     values: [
       {
         name: 'won-light',
-        values: theme.colors.white
+        value: theme.colors.white,
       },
       {
         name: 'won-dark',
-        values: theme.colors.mainBg
+        value: theme.colors.mainBg
       },
     ],
   },
