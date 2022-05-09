@@ -3,14 +3,14 @@ import Base from 'templates/Base'
 import { BannerProps } from 'components/Banner'
 import { GameCardProps } from 'components/GameCard'
 import { HighlightProps } from 'components/Highlight'
+import { Container } from 'components/Container'
 import BannerSlider from 'components/BannerSlider'
 import Showcase from 'components/Showcase'
-
-import { Container } from 'components/Container'
 
 import * as S from './styles'
 
 export type HomeTemplateProps = {
+  data: any
   banners: BannerProps[]
   newGames: GameCardProps[]
   mostPopularHighlight: HighlightProps
