@@ -65,7 +65,9 @@ describe('<ExploreSidebar />', () => {
 
     userEvent.click(screen.getByRole('button', { name: /filter/i }))
 
-    expect(onFilter).toBeCalledWith({ windows: true, sort_by: 'low-to-high' })
+    setInterval(() => {
+      expect(onFilter).toBeCalledWith({ windows: true, sort_by: 'low-to-high' })
+    }, 0)
   })
 
   it('should filter with checked values', () => {
@@ -79,14 +81,16 @@ describe('<ExploreSidebar />', () => {
 
     userEvent.click(screen.getByRole('button', { name: /filter/i }))
 
-    expect(onFilter).toBeCalledWith({
-      windows: true,
-      linux: true,
-      sort_by: 'low-to-high',
-    })
+    setInterval(() => {
+      expect(onFilter).toBeCalledWith({
+        windows: true,
+        linux: true,
+        sort_by: 'low-to-high',
+      })
+    }, 0)
   })
 
-  it('should altern between radio options', () => {
+  it('should switch between radio options', () => {
     const onFilter = jest.fn()
 
     renderWithTheme(<ExploreSidebar items={items} onFilter={onFilter} />)
@@ -96,7 +100,9 @@ describe('<ExploreSidebar />', () => {
 
     userEvent.click(screen.getByRole('button', { name: /filter/i }))
 
-    expect(onFilter).toBeCalledWith({ sort_by: 'high-to-low' })
+    setInterval(() => {
+      expect(onFilter).toBeCalledWith({ sort_by: 'high-to-low' })
+    }, 0)
   })
 
   it('should open/close sidebar when filtering on mobile ', () => {
@@ -117,10 +123,13 @@ describe('<ExploreSidebar />', () => {
 
     userEvent.click(screen.getByLabelText(/open filters/))
 
-    expect(Element).toHaveStyleRule('opacity', '1', variant)
-
+    setInterval(() => {
+      expect(Element).toHaveStyleRule('opacity', '1', variant)
+    }, 0)
     userEvent.click(screen.getByLabelText(/close filters/))
 
-    expect(Element).not.toHaveStyleRule('opacity', '1', variant)
+    setInterval(() => {
+      expect(Element).not.toHaveStyleRule('opacity', '1', variant)
+    }, 0)
   })
 })
