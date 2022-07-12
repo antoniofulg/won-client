@@ -1,10 +1,11 @@
-import { screen, fireEvent } from '@testing-library/react'
+import { fireEvent, screen } from '@testing-library/react'
 import theme from 'styles/theme'
-
 import { renderWithTheme } from 'utils/tests/helpers'
+
 import GameCard from '.'
 
 const props = {
+  slug: 'population-zero',
   title: 'Population Zero',
   developer: 'Rockstar Games',
   img: 'https://source.unsplash.com/user/willianjusten/300x140',
@@ -13,11 +14,12 @@ const props = {
 
 describe('<GameCard />', () => {
   it('should render correctly', () => {
-    renderWithTheme(<GameCard {...props} />)
+    const { container } = renderWithTheme(<GameCard {...props} />)
 
     expect(
       screen.getByRole('heading', { name: props.title })
     ).toBeInTheDocument()
+
     expect(
       screen.getByRole('heading', { name: props.developer })
     ).toBeInTheDocument()
@@ -27,30 +29,34 @@ describe('<GameCard />', () => {
       props.img
     )
 
+    expect(screen.getByRole('link', { name: props.title })).toHaveAttribute(
+      'href',
+      `/game/${props.slug}`
+    )
+
     expect(screen.getByLabelText(/add to wishlist/i)).toBeInTheDocument()
+
+    expect(container.firstChild).toMatchSnapshot()
   })
 
   it('should render price in label', () => {
     renderWithTheme(<GameCard {...props} />)
 
-    const price = screen.getByText(props.price)
+    const price = screen.getByText('R$ 235,00')
 
-    expect(price).not.toHaveStyle({ 'text-decoration': 'line-through' })
-
-    expect(price).not.toHaveAttribute('color', theme.colors.gray)
-
+    expect(price).not.toHaveStyle({ textDecoration: 'line-through' })
     expect(price).toHaveStyle({ backgroundColor: theme.colors.secondary })
   })
 
   it('should render a line-through in price when promotional', () => {
-    renderWithTheme(<GameCard {...props} promotionalPrice="R$ 79,90" />)
+    renderWithTheme(<GameCard {...props} promotionalPrice="R$ 15,00" />)
 
-    expect(screen.getByText(props.price)).toHaveStyle({
-      'text-decoration': 'line-through',
+    expect(screen.getByText('R$ 235,00')).toHaveStyle({
+      textDecoration: 'line-through',
     })
 
-    expect(screen.getByText('R$ 79,90')).not.toHaveStyle({
-      'text-decoration': 'line-through',
+    expect(screen.getByText('R$ 15,00')).not.toHaveStyle({
+      textDecoration: 'line-through',
     })
   })
 
@@ -73,19 +79,15 @@ describe('<GameCard />', () => {
     renderWithTheme(
       <GameCard
         {...props}
-        ribbon="Best Seller"
+        ribbon="My Ribbon"
         ribbonColor="secondary"
         ribbonSize="small"
       />
     )
+    const ribbon = screen.getByText(/my ribbon/i)
 
-    const ribbon = screen.getByText(/best seller/i)
-
-    expect(ribbon).toHaveStyle({ backgroundColor: theme.colors.secondary })
-    expect(ribbon).toHaveStyle({
-      height: '2.6rem',
-      fontSize: theme.font.sizes.xsmall,
-    })
+    expect(ribbon).toHaveStyle({ backgroundColor: '#3CD3C1' })
+    expect(ribbon).toHaveStyle({ height: '2.6rem', fontSize: '1.2rem' })
     expect(ribbon).toBeInTheDocument()
   })
 })
