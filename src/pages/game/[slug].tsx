@@ -12,6 +12,9 @@ import {
   QueryGameBySlugVariables,
 } from 'graphql/generated/QueryGameBySlug'
 import { GetStaticProps } from 'next'
+import { QueryRecommended } from 'graphql/generated/QueryRecommended'
+import { QUERY_RECOMMENDED } from 'graphql/queries/recommended'
+import { gamesMapper } from 'utils/mappers'
 
 const apolloClient = initializeApollo()
 
@@ -41,6 +44,7 @@ export async function getStaticPaths() {
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
+  // Get game data
   const { data } = await apolloClient.query<
     QueryGameBySlug,
     QueryGameBySlugVariables
@@ -55,21 +59,22 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   const game = data.games[0]
 
+  // get recommended games
+  const { data: recommended } = await apolloClient.query<QueryRecommended>({
+    query: QUERY_RECOMMENDED,
+  })
+
   return {
     props: {
       revalidate: 60,
-      cover: game.cover
-        ? `http://localhost:1337${game.cover?.src}`
-        : 'https://random.imagecdn.app/500/250',
+      cover: `http://localhost:1337${game.cover?.src}`,
       gameInfo: {
         title: game.name,
         price: game.price,
         description: game.short_description,
       },
       gallery: game.gallery.map((image) => ({
-        src: image.src
-          ? `http://localhost:1337${image.src}`
-          : 'https://random.imagecdn.app/500/250',
+        src: `http://localhost:1337${image.src}`,
         label: image.label,
       })),
       description: game.description,
@@ -83,7 +88,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       },
       upcomingGames: gamesMock,
       upcomingHighlight: highlightMock,
-      recommendedGames: gamesMock,
+      recommendedTitle: recommended.recommended?.section?.title,
+      recommendedGames: gamesMapper(recommended.recommended?.section?.games),
     },
   }
 }
