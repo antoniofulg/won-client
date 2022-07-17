@@ -16,7 +16,9 @@ describe('<ExploreSidebar />', () => {
     expect(
       screen.getByRole('heading', { name: /sort by/i })
     ).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: /system/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('heading', { name: /platforms/i })
+    ).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: /genre/i })).toBeInTheDocument()
   })
 
@@ -43,7 +45,7 @@ describe('<ExploreSidebar />', () => {
       <ExploreSidebar
         items={items}
         onFilter={jest.fn}
-        initialValues={{ windows: true, sort_by: 'low-to-high' }}
+        initialValues={{ platforms: ['windows'], sort_by: 'low-to-high' }}
       />
     )
 
@@ -58,7 +60,7 @@ describe('<ExploreSidebar />', () => {
     renderWithTheme(
       <ExploreSidebar
         items={items}
-        initialValues={{ windows: true, sort_by: 'low-to-high' }}
+        initialValues={{ platforms: ['windows'], sort_by: 'low-to-high' }}
         onFilter={onFilter}
       />
     )
@@ -66,8 +68,11 @@ describe('<ExploreSidebar />', () => {
     userEvent.click(screen.getByRole('button', { name: /filter/i }))
 
     setInterval(() => {
-      expect(onFilter).toBeCalledWith({ windows: true, sort_by: 'low-to-high' })
-    }, 0)
+      expect(onFilter).toBeCalledWith({
+        platforms: ['windows'],
+        sort_by: 'low-to-high',
+      })
+    })
   })
 
   it('should filter with checked values', () => {
@@ -83,14 +88,13 @@ describe('<ExploreSidebar />', () => {
 
     setInterval(() => {
       expect(onFilter).toBeCalledWith({
-        windows: true,
-        linux: true,
+        platforms: ['windows', 'linux'],
         sort_by: 'low-to-high',
       })
     }, 0)
   })
 
-  it('should switch between radio options', () => {
+  it('should altern between radio options', () => {
     const onFilter = jest.fn()
 
     renderWithTheme(<ExploreSidebar items={items} onFilter={onFilter} />)
@@ -105,7 +109,7 @@ describe('<ExploreSidebar />', () => {
     }, 0)
   })
 
-  it('should open/close sidebar when filtering on mobile ', () => {
+  it('should open/close sidebar when filtering on mobile ', async () => {
     const { container } = renderWithTheme(
       <ExploreSidebar items={items} onFilter={jest.fn} />
     )
@@ -126,6 +130,7 @@ describe('<ExploreSidebar />', () => {
     setInterval(() => {
       expect(Element).toHaveStyleRule('opacity', '1', variant)
     }, 0)
+
     userEvent.click(screen.getByLabelText(/close filters/))
 
     setInterval(() => {
