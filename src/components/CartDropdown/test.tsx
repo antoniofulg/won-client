@@ -1,6 +1,5 @@
 import { render, screen } from 'utils/test-utils'
 
-
 import items from 'components/CartList/mock'
 
 import CartDropdown from '.'

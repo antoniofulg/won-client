@@ -1,6 +1,5 @@
 import { render, screen } from 'utils/test-utils'
 
-
 import cardsMock from 'components/PaymentOptions/mock'
 import CardsList from '.'
 
