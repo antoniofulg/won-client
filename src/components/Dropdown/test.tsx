@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { renderWithTheme } from 'utils/tests/helpers'
 
@@ -19,7 +19,7 @@ describe('<Dropdown />', () => {
     expect(screen.getByLabelText(/toogle dropdown/)).toBeInTheDocument()
   })
 
-  it('should handle open/close dropdown', () => {
+  it('should handle open/close dropdown', async () => {
     const content = screen.getByText(/content/).parentElement!
 
     expect(content).toHaveStyle({ opacity: 0 })
@@ -27,9 +27,28 @@ describe('<Dropdown />', () => {
 
     userEvent.click(screen.getByLabelText(/toogle dropdown/))
 
-    setTimeout(() => {
+    await waitFor(() => {
       expect(content).toHaveStyle({ opacity: 1 })
       expect(content.getAttribute('aria-hidden')).toBe('false')
-    }, 0)
+    })
+  })
+
+  it('should handle open/close dropdown when clicking on overlay', async () => {
+    const content = screen.getByText(/content/).parentElement!
+    const overlay = content.nextElementSibling
+
+    userEvent.click(screen.getByLabelText(/toogle dropdown/))
+
+    await waitFor(() => {
+      expect(overlay).toHaveStyle({ opacity: 1 })
+      expect(overlay!.getAttribute('aria-hidden')).toBe('false')
+    })
+
+    userEvent.click(overlay!)
+
+    await waitFor(() => {
+      expect(overlay).toHaveStyle({ opacity: 0 })
+      expect(overlay!.getAttribute('aria-hidden')).toBe('true')
+    })
   })
 })
