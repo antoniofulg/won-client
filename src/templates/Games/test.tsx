@@ -8,7 +8,6 @@ import { fetchMoreMock, gamesMock } from './mocks'
 import Games from '.'
 import userEvent from '@testing-library/user-event'
 import apolloCache from 'utils/apolloCache'
-import { setInterval } from 'timers/promises'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const useRouter = jest.spyOn(require('next/router'), 'useRouter')
@@ -59,6 +58,18 @@ describe('<Games />', () => {
 
     expect(
       await screen.findByRole('button', { name: /show more/i })
+    ).toBeInTheDocument()
+  })
+
+  it('should render empty when no games found', async () => {
+    renderWithTheme(
+      <MockedProvider mocks={[]} addTypename={false}>
+        <Games filterItems={filterItemsMock} />
+      </MockedProvider>
+    )
+
+    expect(
+      await screen.findByText(/We didn't find any games with this filter/i)
     ).toBeInTheDocument()
   })
 
