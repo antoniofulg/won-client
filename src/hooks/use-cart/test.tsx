@@ -1,21 +1,18 @@
-import { useContext, createContext } from 'react'
+import { renderHook } from '@testing-library/react-hooks'
+import { setStorageItem } from 'utils/localStorage'
 
-export type CartContextData = {}
+import { useCart, CartProvider, CartProviderProps } from '.'
 
-export const CartContextDefaultValues = {}
+describe('useCart', () => {
+  it('should return items and its info if there are any in the cart', () => {
+    const wrapper = ({ children }: CartProviderProps) => (
+      <CartProvider>{children}</CartProvider>
+    )
 
-export const CartContext = createContext<CartContextData>(
-  CartContextDefaultValues
-)
+    setStorageItem('cartItems', ['1', '2'])
 
-export type CartProviderProps = {
-  children: React.ReactNode
-}
+    const { result } = renderHook(() => useCart(), { wrapper })
 
-const CartProvider = ({ children }: CartProviderProps) => {
-  return <CartContext.Provider value={{}}>{children}</CartContext.Provider>
-}
-
-const useCart = () => useContext(CartContext)
-
-export { CartProvider, useCart }
+    expect(result.current.items).toStrictEqual(['1', '2'])
+  })
+})
