@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { renderWithTheme } from 'utils/tests/helpers'
 import { css } from 'styled-components'
@@ -54,7 +54,7 @@ describe('<ExploreSidebar />', () => {
     expect(screen.getByRole('radio', { name: /low to high/i })).toBeChecked()
   })
 
-  it('should filter with initial values', () => {
+  it('should filter with initial values', async () => {
     const onFilter = jest.fn()
 
     renderWithTheme(
@@ -65,15 +65,15 @@ describe('<ExploreSidebar />', () => {
       />
     )
 
-    setInterval(() => {
+    await waitFor(() => {
       expect(onFilter).toBeCalledWith({
         platforms: ['windows'],
         sort_by: 'low-to-high',
       })
-    }, 0)
+    })
   })
 
-  it('should filter with checked values', () => {
+  it('should filter with checked values', async () => {
     const onFilter = jest.fn()
 
     renderWithTheme(<ExploreSidebar items={items} onFilter={onFilter} />)
@@ -83,19 +83,19 @@ describe('<ExploreSidebar />', () => {
     userEvent.click(screen.getByLabelText(/low to high/i))
 
     // 1st render (initialValues) + 3 clicks
-    setInterval(() => {
+    await waitFor(() => {
       expect(onFilter).toHaveBeenCalledTimes(4)
-    }, 0)
+    })
 
-    setInterval(() => {
+    await waitFor(() => {
       expect(onFilter).toBeCalledWith({
         platforms: ['windows', 'linux'],
         sort_by: 'low-to-high',
       })
-    }, 0)
+    })
   })
 
-  it('should altern between radio options', () => {
+  it('should altern between radio options', async () => {
     const onFilter = jest.fn()
 
     renderWithTheme(<ExploreSidebar items={items} onFilter={onFilter} />)
@@ -103,12 +103,12 @@ describe('<ExploreSidebar />', () => {
     userEvent.click(screen.getByLabelText(/low to high/i))
     userEvent.click(screen.getByLabelText(/high to low/i))
 
-    setInterval(() => {
+    await waitFor(() => {
       expect(onFilter).toBeCalledWith({ sort_by: 'high-to-low' })
-    }, 0)
+    })
   })
 
-  it('should open/close sidebar when filtering on mobile ', () => {
+  it('should open/close sidebar when filtering on mobile ', async () => {
     const { container } = renderWithTheme(
       <ExploreSidebar items={items} onFilter={jest.fn} />
     )
@@ -126,22 +126,22 @@ describe('<ExploreSidebar />', () => {
 
     userEvent.click(screen.getByLabelText(/open filters/))
 
-    setInterval(() => {
+    await waitFor(() => {
       expect(Element).toHaveStyleRule('opacity', '1', variant)
-    }, 0)
+    })
 
     userEvent.click(screen.getByLabelText(/close filters/))
 
-    setInterval(() => {
+    await waitFor(() => {
       expect(Element).not.toHaveStyleRule('opacity', '1', variant)
-    }, 0)
+    })
 
     userEvent.click(screen.getByLabelText(/open filters/))
 
     userEvent.click(screen.getByRole('button', { name: /filter/i }))
 
-    setInterval(() => {
+    await waitFor(() => {
       expect(Element).not.toHaveStyleRule('opacity', '1', variant)
-    }, 0)
+    })
   })
 })

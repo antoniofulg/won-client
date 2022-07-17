@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import { MockedProvider } from '@apollo/client/testing'
 
 import { renderWithTheme } from 'utils/tests/helpers'
@@ -98,11 +98,11 @@ describe('<Games />', () => {
     userEvent.click(await screen.findByRole('checkbox', { name: /linux/i }))
     userEvent.click(await screen.findByLabelText(/low to high/i))
 
-    setInterval(() => {
+    await waitFor(() => {
       expect(push).toHaveBeenCalledWith({
         pathname: '/games',
         query: { platforms: ['windows', 'linux'], sort_by: 'low-to-high' },
       })
-    }, 0)
+    })
   })
 })
