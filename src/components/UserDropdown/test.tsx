@@ -1,24 +1,32 @@
-import { render, screen } from 'utils/test-utils'
+import { render, screen, waitFor } from 'utils/test-utils'
 import userEvent from '@testing-library/user-event'
 
 import UserDropdown from '.'
 
 describe('<UserDropdown />', () => {
   it('should render the username', () => {
-    render(<UserDropdown username="Antonio" />)
+    render(<UserDropdown username="Willian" />)
 
-    expect(screen.getByText(/antonio/i)).toBeInTheDocument()
+    expect(screen.getByText(/willian/i)).toBeInTheDocument()
   })
 
-  it('should render the menu', () => {
-    render(<UserDropdown username="Antonio" />)
+  it('should render the menu', async () => {
+    render(<UserDropdown username="Willian" />)
 
     // open menu
-    userEvent.click(screen.getByText(/antonio/i))
+    userEvent.click(screen.getByText(/willian/i))
 
-    expect(screen.getByText(/my profile/i)).toBeInTheDocument()
+    await waitFor(() => {
+      expect(
+        screen.getByRole('link', { name: /my profile/i })
+      ).toBeInTheDocument()
 
-    expect(screen.getByText(/wishlist/i)).toBeInTheDocument()
-    expect(screen.getByText(/sign out/i)).toBeInTheDocument()
+      expect(
+        screen.getByRole('link', { name: /wishlist/i })
+      ).toBeInTheDocument()
+      expect(
+        screen.getByRole('button', { name: /sign out/i })
+      ).toBeInTheDocument()
+    })
   })
 })
