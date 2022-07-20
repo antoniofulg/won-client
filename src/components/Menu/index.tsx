@@ -14,7 +14,7 @@ import CartIcon from 'components/CartIcon'
 import UserDropdown from 'components/UserDropdown'
 
 export type MenuProps = {
-  username?: string
+  username?: string | null
 }
 
 const Menu = ({ username }: MenuProps) => {
@@ -89,7 +89,7 @@ const Menu = ({ username }: MenuProps) => {
               <Link href="/profile/me" passHref>
                 <S.MenuLink>My profile</S.MenuLink>
               </Link>
-              <Link href="/profile/wishlist" passHref>
+              <Link href="/wishlist" passHref>
                 <S.MenuLink>Wishlist</S.MenuLink>
               </Link>
             </>
